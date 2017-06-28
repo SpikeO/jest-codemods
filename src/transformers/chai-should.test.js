@@ -300,16 +300,32 @@ testChanged(
 testChanged(
     'converts "keys"',
     `
+        const fooBar = { foo: 1, bar: 2 };
+        expect(fooBar).to.have.all.keys('foo', 'bar');
+        const fooBar2 = ['foo', 'bar'];
+        expect(fooBar2).to.have.all.keys(0, 1);
+
         expect([1, 2, 3]).to.have.all.keys(1, 2);
         expect({ foo: 1, bar: 2 }).to.have.all.keys({ bar: 6, foo: 7 });
+        expect({ foo: 1, bar: 2 }).to.have.all.keys(['foo', 'bar']);
+        expect({ foo: 1, bar: 2 }).to.have.all.keys('foo', 'bar');
         expect({ foo: 1, bar: 2, baz: 3 }).to.contain.all.keys(['bar', 'foo']);
         expect({ foo: 1, bar: 2, baz: 3 }).to.contain.all.keys({ bar: 6 });
+        expect(['x', 'y']).to.have.all.keys(0, 1);
     `,
     `
+        const fooBar = { foo: 1, bar: 2 };
+        expect(Object.keys(fooBar)).toEqual(expect.arrayContaining(['foo', 'bar']));
+        const fooBar2 = ['foo', 'bar'];
+        expect(Object.keys(fooBar2)).toEqual(expect.arrayContaining(['foo', 'bar']));
+
         expect([1, 2, 3]).toEqual(expect.arrayContaining([1, 2]));
         expect(Object.keys({ foo: 1, bar: 2 })).toEqual(expect.arrayContaining(Object.keys({ bar: 6, foo: 7 })));
+        expect(Object.keys({ foo: 1, bar: 2 })).toEqual(expect.arrayContaining(['foo', 'bar']));
+        expect(Object.keys({ foo: 1, bar: 2 })).toEqual(expect.arrayContaining(['foo', 'bar']));
         expect(Object.keys({ foo: 1, bar: 2, baz: 3 })).toEqual(expect.arrayContaining(['bar', 'foo']));
         expect(Object.keys({ foo: 1, bar: 2, baz: 3 })).toEqual(expect.arrayContaining(Object.keys({ bar: 6 })));
+        expect(['x', 'y']).toEqual(expect.arrayContaining(['x', 'y']));
     `
 );
 
